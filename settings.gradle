@@ -1,0 +1,4 @@
+rootProject.name = 'noriter'
+include 'noriter-support'
+include 'noriter-api'
+
