@@ -30,4 +30,16 @@ class CategoryTest {
         assertThat(category.getName()).isEqualTo(afterChangedName);
     }
 
+    @DisplayName("카테고리 아이콘 이미지 URL을 변경할 수 있다.")
+    @Test
+    void changeIconImageUrl() {
+        String beforeChangeIconImageUrl = category.getIconImageUrl();
+        assertThat(category.getIconImageUrl()).isEqualTo(beforeChangeIconImageUrl);
+
+        String afterChangedImageUrl =
+                "https://https://noriter-bucket.s3.ap-northeast-2.amazonaws.com/data/changed_image_1596187406745_1000.jpg";
+        category.changeIconImageUrl(afterChangedImageUrl);
+        assertThat(category.getIconImageUrl()).isEqualTo(afterChangedImageUrl);
+    }
+
 }
