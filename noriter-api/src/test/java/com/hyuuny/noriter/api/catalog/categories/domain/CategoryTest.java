@@ -42,4 +42,15 @@ class CategoryTest {
         assertThat(category.getIconImageUrl()).isEqualTo(afterChangedImageUrl);
     }
 
+    @DisplayName("카테고리 우선순위를 변경할 수 있다.")
+    @Test
+    void changePriorityNumber() {
+        int beforeChangePriorityNumber = category.getPriorityNumber();
+        assertThat(category.getPriorityNumber()).isEqualTo(beforeChangePriorityNumber);
+
+        int afterChangedPriorityNumber = 1000;
+        category.changePriorityNumber(afterChangedPriorityNumber);
+        assertThat(category.getPriorityNumber()).isEqualTo(afterChangedPriorityNumber);
+    }
+
 }
