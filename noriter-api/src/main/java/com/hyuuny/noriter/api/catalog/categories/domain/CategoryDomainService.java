@@ -27,4 +27,8 @@ public class CategoryDomainService {
         return categoryRepository.findAll();
     }
 
+    public void delete(final Long id) {
+        categoryRepository.deleteById(id);
+    }
+
 }

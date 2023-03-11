@@ -50,4 +50,10 @@ public class CategoryAdminRestController extends AbstractController {
         return ok(updatedCategory);
     }
 
+    @DeleteMapping(value = "/{id}", name = "카테고리 삭제")
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") final Long id) {
+        categoryService.deleteCategory(id);
+        return noContent();
+    }
+
 }

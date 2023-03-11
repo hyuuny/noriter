@@ -42,4 +42,9 @@ public class CategoryService {
         return getCategory(id);
     }
 
+    @Transactional
+    public void deleteCategory(final Long id) {
+        categoryDomainService.delete(id);
+    }
+
 }

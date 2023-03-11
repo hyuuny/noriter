@@ -190,4 +190,16 @@ class CategoryAdminRestControllerTest extends BaseIntegrationTests {
                 .andExpect(jsonPath("$.data.lastModifiedAt").exists());
     }
 
+    @DisplayName("관리자는 카테고리를 삭제할 수 있다.")
+    @Test
+    void deleteCategory() throws Exception {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        mockMvc.perform(delete(CATEGORY_REQUEST_PATH + "/{id}", savedCategory.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
 }

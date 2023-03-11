@@ -133,4 +133,14 @@ class CategoryServiceTest extends BaseIntegrationTests {
         assertThat(updatedCategory.getLastModifiedAt()).isNotNull();
     }
 
+    @DisplayName("카테고리를 삭제할 수 있다.")
+    @Test
+    void deleteCategory() {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response newCategory = categoryService.createCategory(dto);
+
+        categoryService.deleteCategory(newCategory.getId());
+        assertThat(categoryRepository.findById(newCategory.getId()).isEmpty()).isTrue();
+    }
+
 }
