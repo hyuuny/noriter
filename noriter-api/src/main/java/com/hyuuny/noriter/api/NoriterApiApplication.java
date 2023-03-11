@@ -1,7 +1,7 @@
 package com.hyuuny.noriter.api;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
@@ -13,8 +13,16 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 )
 public class NoriterApiApplication {
 
+    public static final String APPLICATION_LOCATIONS = "spring.config.location="
+            + "classpath:application.yml,"
+            + "classpath:application-support.yml";
+
     public static void main(String[] args) {
-        SpringApplication.run(NoriterApiApplication.class, args);
+        new SpringApplicationBuilder(NoriterApiApplication.class)
+                .properties(APPLICATION_LOCATIONS)
+                .run(args);
+
     }
+
 
 }
