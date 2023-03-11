@@ -2,6 +2,7 @@ package com.hyuuny.noriter.api.catalog.categories.application;
 
 import com.hyuuny.noriter.api.catalog.categories.domain.CategoryRepository;
 import com.hyuuny.noriter.api.common.BaseIntegrationTests;
+import com.hyuuny.noriter.support.config.web.exceptions.NoriterException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 
 import static com.hyuuny.noriter.api.Fixtures.aCategory;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 class CategoryServiceTest extends BaseIntegrationTests {
@@ -141,6 +143,18 @@ class CategoryServiceTest extends BaseIntegrationTests {
 
         categoryService.deleteCategory(newCategory.getId());
         assertThat(categoryRepository.findById(newCategory.getId()).isEmpty()).isTrue();
+    }
+
+    @DisplayName("존재하지 않는 카테고리를 상세 조회하면 예외가 발생한다.")
+    @Test
+    void deleteCategoryAndException() {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response newCategory = categoryService.createCategory(dto);
+
+        categoryService.deleteCategory(newCategory.getId());
+        assertThatThrownBy(() -> categoryService.getCategory(newCategory.getId()))
+                .isInstanceOf(NoriterException.class)
+                .hasMessage(newCategory.getId() + "번 카테고리를 찾을 수 없습니다.");
     }
 
 }

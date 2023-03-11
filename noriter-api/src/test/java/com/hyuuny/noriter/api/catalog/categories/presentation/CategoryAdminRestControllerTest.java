@@ -14,7 +14,10 @@ import org.springframework.http.MediaType;
 import java.util.stream.IntStream;
 
 import static com.hyuuny.noriter.api.Fixtures.aCategory;
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -200,6 +203,21 @@ class CategoryAdminRestControllerTest extends BaseIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("관리자가 존재하지 않는 카테고리를 상세 조회하면 예외가 발생한다.")
+    @Test
+    void getCategoryAndException() throws Exception {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+        categoryService.deleteCategory(savedCategory.getId());
+
+        mockMvc.perform(get(CATEGORY_REQUEST_PATH + "/{id}", savedCategory.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertThat(savedCategory.getId() + "번 카테고리를 찾을 수 없습니다.")
+                        .isEqualTo(requireNonNull(result.getResolvedException()).getMessage()))
+        ;
     }
 
 }
