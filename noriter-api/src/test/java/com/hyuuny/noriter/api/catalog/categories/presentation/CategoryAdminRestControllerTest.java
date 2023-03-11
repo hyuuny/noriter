@@ -163,4 +163,31 @@ class CategoryAdminRestControllerTest extends BaseIntegrationTests {
                 .andExpect(jsonPath("$.data.lastModifiedAt").exists());
     }
 
+    @DisplayName("관리자는 카테고리 우선 순위를 변경할 수 있다.")
+    @Test
+    void updateCategoryPriorityNumber() throws Exception {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        CategoryDto.Update updateDto = CategoryDto.Update.builder()
+                .name(dto.getName())
+                .iconImageUrl(dto.getIconImageUrl())
+                .priorityNumber(1)
+                .build();
+
+        mockMvc.perform(put(CATEGORY_REQUEST_PATH + "/{id}", savedCategory.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.objectMapper.writeValueAsString(updateDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("20000"))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.name").value(dto.getName()))
+                .andExpect(jsonPath("$.data.priorityNumber").value(updateDto.getPriorityNumber()))
+                .andExpect(jsonPath("$.data.iconImageUrl").value(dto.getIconImageUrl()))
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andExpect(jsonPath("$.data.lastModifiedAt").exists());
+    }
+
 }
