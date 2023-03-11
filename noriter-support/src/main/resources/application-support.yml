@@ -22,8 +22,3 @@ spring:
         order_updates: true
         jdbc:
           batch_size: 20000
-
-logging:
-  level:
-    com.hyuuny.noriter.api: DEBUG
-    org.springframework.security.web: DEBUG
