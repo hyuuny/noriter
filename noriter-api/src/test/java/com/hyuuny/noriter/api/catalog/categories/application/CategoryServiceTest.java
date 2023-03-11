@@ -93,4 +93,24 @@ class CategoryServiceTest extends BaseIntegrationTests {
         assertThat(updatedCategory.getLastModifiedAt()).isNotNull();
     }
 
+    @DisplayName("카테고리 아이콘 이미지 URL을 변경할 수 있다.")
+    @Test
+    void updateCategoryIconImageUrl() {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        CategoryDto.Update updateDto = CategoryDto.Update.builder()
+                .name(dto.getName())
+                .iconImageUrl("https://noriter-bucket.s3.ap-northeast-2.amazonaws.com/data/image_1596187406745_1000.jpg/data/update_image_1596187406745_1000.jpg")
+                .priorityNumber(dto.getPriorityNumber())
+                .build();
+        CategoryDto.Response updatedCategory = categoryService.updateCategory(savedCategory.getId(), updateDto);
+        assertThat(updatedCategory.getId()).isNotNull();
+        assertThat(updatedCategory.getName()).isEqualTo(dto.getName());
+        assertThat(updatedCategory.getIconImageUrl()).isEqualTo(updatedCategory.getIconImageUrl());
+        assertThat(updatedCategory.getPriorityNumber()).isEqualTo(dto.getPriorityNumber());
+        assertThat(updatedCategory.getCreatedAt()).isNotNull();
+        assertThat(updatedCategory.getLastModifiedAt()).isNotNull();
+    }
+
 }
