@@ -58,4 +58,19 @@ class CategoryServiceTest extends BaseIntegrationTests {
         assertThat(categories.size()).isEqualTo(11);
     }
 
+    @DisplayName("카테고리를 상세 조회할 수 있다.")
+    @Test
+    void getCategory() {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        CategoryDto.Response existingCategory = categoryService.getCategory(savedCategory.getId());
+        assertThat(existingCategory.getId()).isNotNull();
+        assertThat(existingCategory.getName()).isEqualTo(dto.getName());
+        assertThat(existingCategory.getIconImageUrl()).isEqualTo(dto.getIconImageUrl());
+        assertThat(existingCategory.getPriorityNumber()).isEqualTo(dto.getPriorityNumber());
+        assertThat(existingCategory.getCreatedAt()).isNotNull();
+        assertThat(existingCategory.getLastModifiedAt()).isNotNull();
+    }
+
 }

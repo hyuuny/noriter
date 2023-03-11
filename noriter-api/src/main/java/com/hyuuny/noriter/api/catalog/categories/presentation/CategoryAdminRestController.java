@@ -33,4 +33,12 @@ public class CategoryAdminRestController extends AbstractController {
         return ok(existingCategories);
     }
 
+    @GetMapping(value = "/{id}", name = "카테고리 상세 조회")
+    public ResponseEntity<NoriterResponseDto<CategoryDto.Response>> getCategory(
+            @PathVariable("id") final Long id
+    ) {
+        CategoryDto.Response existingCategory = categoryService.getCategory(id);
+        return ok(existingCategory);
+    }
+
 }
