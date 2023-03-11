@@ -35,4 +35,11 @@ public class CategoryService {
         return categories.toResponses();
     }
 
+    @Transactional
+    public CategoryDto.Response updateCategory(final Long id, CategoryDto.Update dto) {
+        Category existingCategory = categoryDomainService.loadCategory(id);
+        dto.update(existingCategory);
+        return getCategory(id);
+    }
+
 }

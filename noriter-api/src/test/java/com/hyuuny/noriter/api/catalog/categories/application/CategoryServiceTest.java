@@ -73,4 +73,24 @@ class CategoryServiceTest extends BaseIntegrationTests {
         assertThat(existingCategory.getLastModifiedAt()).isNotNull();
     }
 
+    @DisplayName("카테고리 이름을 변경할 수 있다.")
+    @Test
+    void updateCategoryName() {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        CategoryDto.Update updateDto = CategoryDto.Update.builder()
+                .name("가전제품")
+                .iconImageUrl(dto.getIconImageUrl())
+                .priorityNumber(dto.getPriorityNumber())
+                .build();
+        CategoryDto.Response updatedCategory = categoryService.updateCategory(savedCategory.getId(), updateDto);
+        assertThat(updatedCategory.getId()).isNotNull();
+        assertThat(updatedCategory.getName()).isEqualTo(updateDto.getName());
+        assertThat(updatedCategory.getIconImageUrl()).isEqualTo(dto.getIconImageUrl());
+        assertThat(updatedCategory.getPriorityNumber()).isEqualTo(dto.getPriorityNumber());
+        assertThat(updatedCategory.getCreatedAt()).isNotNull();
+        assertThat(updatedCategory.getLastModifiedAt()).isNotNull();
+    }
+
 }

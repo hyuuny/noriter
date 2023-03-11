@@ -41,4 +41,13 @@ public class CategoryAdminRestController extends AbstractController {
         return ok(existingCategory);
     }
 
+    @PutMapping(value = "/{id}", name = "카테고리 수정")
+    public ResponseEntity<NoriterResponseDto<CategoryDto.Response>> updateCategory(
+            @PathVariable("id") final Long id,
+            @RequestBody @Valid CategoryDto.Update dto
+    ) {
+        CategoryDto.Response updatedCategory = categoryService.updateCategory(id, dto);
+        return ok(updatedCategory);
+    }
+
 }

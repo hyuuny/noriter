@@ -14,8 +14,7 @@ import org.springframework.http.MediaType;
 import java.util.stream.IntStream;
 
 import static com.hyuuny.noriter.api.Fixtures.aCategory;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -108,6 +107,33 @@ class CategoryAdminRestControllerTest extends BaseIntegrationTests {
                 .andExpect(jsonPath("$.data.createdAt").exists())
                 .andExpect(jsonPath("$.data.lastModifiedAt").exists())
         ;
+    }
+
+    @DisplayName("관리자는 카테고리 이름을 변경할 수 있다.")
+    @Test
+    void updateCategoryName() throws Exception {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response savedCategory = categoryService.createCategory(dto);
+
+        CategoryDto.Update updateDto = CategoryDto.Update.builder()
+                .name("가전제품")
+                .iconImageUrl(dto.getIconImageUrl())
+                .priorityNumber(dto.getPriorityNumber())
+                .build();
+
+        mockMvc.perform(put(CATEGORY_REQUEST_PATH + "/{id}", savedCategory.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.objectMapper.writeValueAsString(updateDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("20000"))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.name").value(updateDto.getName()))
+                .andExpect(jsonPath("$.data.priorityNumber").value(dto.getPriorityNumber()))
+                .andExpect(jsonPath("$.data.iconImageUrl").value(dto.getIconImageUrl()))
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andExpect(jsonPath("$.data.lastModifiedAt").exists());
     }
 
 }
