@@ -1,10 +1,13 @@
 package com.hyuuny.noriter.api.catalog.categories.application;
 
+import com.hyuuny.noriter.api.catalog.categories.application.collections.Categories;
 import com.hyuuny.noriter.api.catalog.categories.domain.Category;
 import com.hyuuny.noriter.api.catalog.categories.domain.CategoryDomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,6 +27,12 @@ public class CategoryService {
     public CategoryDto.Response getCategory(final Long id) {
         Category existingCategory = categoryDomainService.loadCategory(id);
         return new CategoryDto.Response(existingCategory);
+    }
+
+    public List<CategoryDto.Response> getCategories() {
+        List<Category> existingCategories = categoryDomainService.loadCategories();
+        Categories categories = new Categories(existingCategories);
+        return categories.toResponses();
     }
 
 }

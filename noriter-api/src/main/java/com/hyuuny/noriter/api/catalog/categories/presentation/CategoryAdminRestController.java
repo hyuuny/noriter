@@ -8,10 +8,9 @@ import com.hyuuny.noriter.support.common.dto.NoriterResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/admin/v1/categories")
 @RequiredArgsConstructor
@@ -26,6 +25,12 @@ public class CategoryAdminRestController extends AbstractController {
     ) {
         CategoryDto.Response savedCategory = categoryService.createCategory(dto);
         return created(savedCategory);
+    }
+
+    @GetMapping(name = "카테고리 목록 조회")
+    public ResponseEntity<NoriterResponseDto<List<CategoryDto.Response>>> getCategories() {
+        List<CategoryDto.Response> existingCategories = categoryService.getCategories();
+        return ok(existingCategories);
     }
 
 }

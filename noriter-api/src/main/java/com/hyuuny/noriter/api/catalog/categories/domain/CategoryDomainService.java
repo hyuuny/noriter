@@ -5,6 +5,8 @@ import com.hyuuny.noriter.support.config.web.exceptions.NoriterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class CategoryDomainService {
@@ -20,4 +22,9 @@ public class CategoryDomainService {
                 () -> new NoriterException(NoriterResponseCode.BAD_REQUEST, id + "번 카테고리를 찾을 수 없습니다.")
         );
     }
+
+    public List<Category> loadCategories() {
+        return categoryRepository.findAll();
+    }
+
 }
