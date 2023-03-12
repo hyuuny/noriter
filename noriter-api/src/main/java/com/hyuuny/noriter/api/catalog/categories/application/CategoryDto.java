@@ -3,11 +3,13 @@ package com.hyuuny.noriter.api.catalog.categories.application;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.hyuuny.noriter.api.catalog.categories.domain.Category;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 
 public class CategoryDto {
@@ -16,13 +18,16 @@ public class CategoryDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @Schema(name = "CategoryDto.Create", description = "카테고리 등록")
     public static class Create {
 
-        @NotEmpty
+        @Schema(description = "카테고리명", example = "생활가전", requiredMode = REQUIRED)
         private String name;
 
+        @Schema(description = "아이콘 이미지 URL", example = "https://noriter-bucket.s3.ap-northeast-2.amazonaws.com/data/image_1596187406745_1000.jpg", requiredMode = NOT_REQUIRED)
         private String iconImageUrl;
 
+        @Schema(description = "우선순위(desc)", example = "900", requiredMode = NOT_REQUIRED)
         private int priorityNumber;
 
         public Category toEntity() {
@@ -39,13 +44,16 @@ public class CategoryDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @Schema(name = "CategoryDto.Update", description = "카테고리 수정")
     public static class Update {
 
-        @NotEmpty
+        @Schema(description = "카테고리명", example = "생활가전", requiredMode = REQUIRED)
         private String name;
 
+        @Schema(description = "아이콘 이미지 URL", example = "https://noriter-bucket.s3.ap-northeast-2.amazonaws.com/data/image_1596187406745_1000.jpg", requiredMode = NOT_REQUIRED)
         private String iconImageUrl;
 
+        @Schema(description = "우선순위(desc)", example = "900", requiredMode = NOT_REQUIRED)
         private int priorityNumber;
 
         public void update(Category entity) {
@@ -60,21 +68,26 @@ public class CategoryDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema(name = "CategoryDto.Response", description = "카테고리 상세")
     @JsonInclude(Include.NON_EMPTY)
     public static class Response {
 
-        @NotNull
+        @Schema(description = "아이디", example = "1", requiredMode = REQUIRED)
         private Long id;
 
-        @NotEmpty
+        @Schema(description = "카테고리명", example = "생활가전", requiredMode = REQUIRED)
         private String name;
 
+        @Schema(description = "아이콘 이미지 URL", example = "https://noriter-bucket.s3.ap-northeast-2.amazonaws.com/data/image_1596187406745_1000.jpg", requiredMode = NOT_REQUIRED)
         private String iconImageUrl;
 
+        @Schema(description = "우선순위(desc)", example = "900", requiredMode = NOT_REQUIRED)
         private int priorityNumber;
 
+        @Schema(description = "생성일", requiredMode = REQUIRED)
         private LocalDateTime createdAt;
 
+        @Schema(description = "마지막 수정일", requiredMode = REQUIRED)
         private LocalDateTime lastModifiedAt;
 
         public Response(Category entity) {
