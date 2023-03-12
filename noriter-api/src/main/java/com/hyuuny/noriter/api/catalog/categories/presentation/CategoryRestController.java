@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,15 @@ public class CategoryRestController extends AbstractController {
     public ResponseEntity<NoriterResponseDto<List<CategoryDto.Response>>> getCategories() {
         List<CategoryDto.Response> existingCategories = categoryService.getCategories();
         return ok(existingCategories);
+    }
+
+    @Operation(summary = "카테고리 상세 조회")
+    @GetMapping("/{id}")
+    public ResponseEntity<NoriterResponseDto<CategoryDto.Response>> getCategory(
+            @PathVariable("id") final Long id
+    ) {
+        CategoryDto.Response existingCategory = categoryService.getCategory(id);
+        return ok(existingCategory);
     }
 
 }

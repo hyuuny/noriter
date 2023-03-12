@@ -67,4 +67,25 @@ class CategoryRestControllerTest extends BaseIntegrationTests {
         ;
     }
 
+    @DisplayName("회원을 카테고리를 상세 조회할 수 있다.")
+    @Test
+    void getCategory() throws Exception {
+        CategoryDto.Create dto = aCategory().build();
+        CategoryDto.Response newCategory = categoryService.createCategory(dto);
+
+        mockMvc.perform(get(CATEGORY_REQUEST_PATH + "/{id}", newCategory.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("20000"))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.name").value(dto.getName()))
+                .andExpect(jsonPath("$.data.priorityNumber").value(dto.getPriorityNumber()))
+                .andExpect(jsonPath("$.data.iconImageUrl").value(dto.getIconImageUrl()))
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andExpect(jsonPath("$.data.lastModifiedAt").exists())
+        ;
+    }
+
 }
